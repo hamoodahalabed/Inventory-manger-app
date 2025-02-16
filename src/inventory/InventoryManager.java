@@ -5,10 +5,7 @@ import exception.NoProductsFoundException;
 import exception.ProductAlreadyExistsException;
 import model.Product;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class InventoryManager implements IInventoryManager {
@@ -46,6 +43,7 @@ public class InventoryManager implements IInventoryManager {
         ensureProductExistsOrThrow(productId);
         Product product = inventory.get(productId);
         product.setQuantity(newQuantity);
+
     }
 
     @Override
@@ -55,9 +53,9 @@ public class InventoryManager implements IInventoryManager {
     }
 
     @Override
-    public Product getProduct(String productId) {
-        ensureProductExistsOrThrow(productId);
-        return inventory.get(productId);
+    public Optional<Product> getProduct(String productId) {
+        return Optional.ofNullable(Optional.ofNullable(inventory.get(productId))
+                .orElseThrow(() -> new NoProductsFoundException("Product not found with ID: " + productId)));
     }
 
     // These methods (recommendReorders, findTopNProductsByValue) return a defensive copy of

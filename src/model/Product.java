@@ -16,6 +16,7 @@ public class Product {
         this.reorderPoint = reorderPoint;
         this.reorderAmount = reorderAmount;
     }
+
     public Product(Product other) {
         this.productId = other.productId;
         this.name = other.name;

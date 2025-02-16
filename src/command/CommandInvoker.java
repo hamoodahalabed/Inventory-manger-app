@@ -4,7 +4,8 @@ import command.commands.InventoryCommand;
 
 public class CommandInvoker {
 
-    private CommandInvoker() {}
+    private CommandInvoker() {
+    }
 
     private static final class InstanceHolder {
         private static final CommandInvoker instance = new CommandInvoker();

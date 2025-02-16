@@ -6,6 +6,7 @@ import model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public class InventoryService {
@@ -25,7 +26,7 @@ public class InventoryService {
     }
 
     public void addProduct(Product product) {
-        validateProduct(product);
+        validProductOrThrow(product);
         try {
             inventoryManager.addProduct(product);
             System.out.println("Product added successfully: " + product.getName());
@@ -50,7 +51,7 @@ public class InventoryService {
     public void removeProduct(String productId) {
         try {
             inventoryManager.removeProduct(productId);
-            System.out.println("Product with id: " + productId +  " removed.");
+            System.out.println("Product with id: " + productId + " removed.");
         } catch (NoProductsFoundException e) {
             handleException(e, "Error removing product.");
         }
@@ -58,8 +59,8 @@ public class InventoryService {
 
     public void getProduct(String productId) {
         try {
-            Product product = inventoryManager.getProduct(productId);
-            System.out.println("Product: " + product);
+            Optional<Product> product = inventoryManager.getProduct(productId);
+            product.ifPresentOrElse(System.out::println, () -> System.out.println("Product not found."));
         } catch (NoProductsFoundException e) {
             handleException(e, "Error fetching product.");
         }
@@ -98,14 +99,14 @@ public class InventoryService {
                 System.out.println("No top products found.");
             } else {
                 System.out.println("Top " + n + " products by value:");
-                topProducts.forEach(p -> System.out.println( p.getName() + " - Value: " + p.getPrice() * p.getQuantity()));
+                topProducts.forEach(p -> System.out.println(p.getName() + " - Value: " + p.getPrice() * p.getQuantity()));
             }
         } catch (EmptyInventoryException e) {
             handleException(e, e.getMessage());
         }
     }
 
-    private void validateProduct(Product product) {
+    private void validProductOrThrow(Product product) {
         List<String> validationErrors = new ArrayList<>();
         if (product.getProductId() == null || product.getProductId().isEmpty()) {
             validationErrors.add("Product ID cannot be empty");

@@ -18,8 +18,11 @@ public class UIInputHandler {
     public static UIInputHandler getInstance() {
         return UIInputHandler.InstanceHolder.instance;
     }
+
     private final CommandInvoker commandInvoker = CommandInvoker.getInstance();
-    private UIInputHandler() {}
+
+    private UIInputHandler() {
+    }
 
 
     public void addProduct(Scanner scanner) {
