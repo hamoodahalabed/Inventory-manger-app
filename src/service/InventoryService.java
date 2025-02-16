@@ -2,6 +2,7 @@ package service;
 
 import exception.*;
 import inventory.InventoryManager;
+import inventory.InventoryManagerImpl;
 import model.Product;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class InventoryService {
     private final InventoryManager inventoryManager;
 
     public InventoryService() {
-        this.inventoryManager = InventoryManager.getInstance();
+        this.inventoryManager = InventoryManagerImpl.getInstance();
     }
 
     private static final class InstanceHolder {
