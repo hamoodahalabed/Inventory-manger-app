@@ -37,13 +37,14 @@ public class InventoryService {
     }
 
     public void updateProductQuantity(String productId, int newQuantity) {
-        if (newQuantity < 0) {
-            System.out.println("Error: Quantity cannot be negative. Quantity: " + newQuantity);
-            return;
-        }
         try {
+            if (newQuantity < 0) {
+                throw new InvalidQuantityException("Error: Quantity cannot be negative. Quantity: " + newQuantity);
+            }
             inventoryManager.updateProductQuantity(productId, newQuantity);
-            System.out.println("Product quantity updated for this product id: {" + productId + "} to be " + newQuantity + "pieces.");
+            System.out.println("Product quantity updated for this product id: {" + productId + "} to be " + newQuantity + " pieces.");
+        } catch (InvalidQuantityException e) {
+            handleException(e, "Invalid quantity provided for the product.");
         } catch (NoProductsFoundException e) {
             handleException(e, "Error updating product quantity.");
         }
