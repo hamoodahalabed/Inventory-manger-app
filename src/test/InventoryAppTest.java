@@ -1,13 +1,14 @@
 package test;
 
+import command.CommandInvoker;
+import command.commands.*;
 import model.Product;
-import service.InventoryService;
 
 public class InventoryAppTest {
-    private final InventoryService inventoryService;
+    private final CommandInvoker commandInvoker;
 
     public InventoryAppTest() {
-        this.inventoryService = InventoryService.getInstance();
+        this.commandInvoker = CommandInvoker.getInstance();
     }
 
     public void runTests() {
@@ -24,53 +25,54 @@ public class InventoryAppTest {
 
     private void addProducts() {
         System.out.println("Adding products...");
-        inventoryService.addProduct(new Product("P1", "Spark Plug", 15.00, 200, 50, 500));
-        inventoryService.addProduct(new Product("P2", "Tire", 120.00, 40, 10, 100));
-        inventoryService.addProduct(new Product("P3", "Windshield Wiper Blade", 25.00, 60, 20, 150));
-        inventoryService.addProduct(new Product("P4", "Radiator Coolant", 12.00, 80, 20, 200));
+        commandInvoker.executeCommand(new AddProductCommand(new Product("P1", "Car Battery", 120.0, 30, 5, 50)));
+        commandInvoker.executeCommand(new AddProductCommand(new Product("P2", "Brake Disc", 80.0, 10, 5, 40)));
+        commandInvoker.executeCommand(new AddProductCommand(new Product("P3", "Engine Oil", 45.0, 0, 10, 30)));
+        commandInvoker.executeCommand(new AddProductCommand(new Product("P4", "Air Filter", 25.0, 100, 20, 200)));
         System.out.println();
+
     }
 
     private void listAllProducts() {
         System.out.println("Listing all products...");
-        inventoryService.listAllProducts();
+        commandInvoker.executeCommand(new ListAllProductsCommand());
         System.out.println();
     }
 
     private void updateProductQuantity() {
         System.out.println("Updating product quantity...");
-        inventoryService.updateProductQuantity("P2", 15);
-        inventoryService.updateProductQuantity("P3", 10);
+        commandInvoker.executeCommand(new UpdateProductQuantityCommand("P2", 15));
+        commandInvoker.executeCommand(new UpdateProductQuantityCommand("P3", 10));
         System.out.println();
     }
 
     private void retrieveProduct() {
         System.out.println("Retrieving a product...");
-        inventoryService.getProduct("P1");
+        commandInvoker.executeCommand(new GetProductByIdCommand("P1"));
         System.out.println();
     }
 
     private void removeProduct() {
         System.out.println("Removing a product...");
-        inventoryService.removeProduct("P4");
+        commandInvoker.executeCommand(new RemoveProductCommand("P4"));
         System.out.println();
     }
 
     private void listAllProductsAfterRemoval() {
         System.out.println("Listing all products after removal...");
-        inventoryService.listAllProducts();
+        commandInvoker.executeCommand(new ListAllProductsCommand());
         System.out.println();
     }
 
     private void recommendReorders() {
         System.out.println("Recommending reorders...");
-        inventoryService.recommendReorders();
+        commandInvoker.executeCommand(new RecommendReordersCommand());
         System.out.println();
     }
 
     private void findTopNProductsByValue(int n) {
         System.out.println("Finding top " + n + " products by value...");
-        inventoryService.findTopNProductsByValue(n);
+        commandInvoker.executeCommand(new FindTopNProductsCommand(n));
         System.out.println();
     }
 }
