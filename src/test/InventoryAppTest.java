@@ -73,9 +73,4 @@ public class InventoryAppTest {
         inventoryService.findTopNProductsByValue(n);
         System.out.println();
     }
-
-    public static void main(String[] args) {
-        InventoryAppTest test = new InventoryAppTest();
-        test.runTests();
-    }
 }
